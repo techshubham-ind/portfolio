@@ -88,3 +88,50 @@ section {
 body {
     animation: fadeIn 1.5s ease-in-out;
 }
+/* Contact Page */
+.contact {
+    padding: 50px;
+    text-align: center;
+}
+
+.contact form {
+    max-width: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact input, 
+.contact textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+
+.contact textarea {
+    height: 100px;
+}
+
+.contact .btn {
+    cursor: pointer;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    color: #ffcc00;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: white;
+}

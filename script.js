@@ -1,6 +1,3 @@
-// Dark Mode Toggle
-const themeToggle = document.getElementById("theme-toggle");
-themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    themeToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.style.opacity = "1";
 });

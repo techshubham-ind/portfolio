@@ -3,19 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Shubham Mahato</title>
+  <title>About Me | Shubham Mahato</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Add the same button-style navigation as in index.html */
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav ul li {
+      display: inline-block;
+    }
+
+    nav ul li a {
+      background-color: #4CAF50; /* Green background */
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background-color: #45a049; /* Darker green on hover */
+    }
+  </style>
 </head>
 <body>
 
   <header>
-    <h1 class="fadeIn">My Projects</h1>
+    <h1 class="fadeIn">About Me</h1>
   </header>
 
   <nav>
     <ul>
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Me</a></li>
+      <li><a href="projects.html">Projects</a></li>
       <li><a href="achievements.html">Achievements</a></li>
       <li><a href="skills.html">Skills</a></li>
       <li><a href="publications.html">Publications</a></li>
@@ -26,20 +54,10 @@
     </ul>
   </nav>
 
-  <section id="projects-list" class="fadeIn">
-    <h2>Featured Projects</h2>
-    <div class="project-item">
-      <h3>🛰️ Smog Hawk</h3>
-      <p>A patented drone-based pollution monitoring system designed to help control air quality.</p>
-    </div>
-    <div class="project-item">
-      <h3>🌾 Sanrakshan</h3>
-      <p>An innovative drone system designed to empower farmers with real-time data for better crop health monitoring.</p>
-    </div>
-    <div class="project-item">
-      <h3>🚗 Bluetooth Rover Car</h3>
-      <p>A Bluetooth-controlled rover car designed for educational purposes in robotics and automation.</p>
-    </div>
+  <section id="intro" class="fadeIn">
+    <h2>Who Am I?</h2>
+    <p>I am Shubham Mahato, an innovator and technologist passionate about leveraging technology to solve real-world problems. From pollution monitoring systems to autonomous vehicles, my projects aim to empower communities and drive sustainable change.</p>
+    <img src="images/profile.jpg" alt="Shubham Mahato" />
   </section>
 
   <footer>

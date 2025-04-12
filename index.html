@@ -48,20 +48,24 @@
       color: white;
     }
 
-    /* Button-style navigation at the bottom */
+    /* Navigation Styles */
     nav {
       background-color: #333;
       padding: 10px 0;
-      overflow-x: auto; /* Allow horizontal scrolling */
-      white-space: nowrap; /* Prevent wrapping */
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
     }
 
     nav ul {
       list-style: none;
+      display: flex;
       padding: 0;
       margin: 0;
-      display: inline-flex;
-      gap: 20px;
+      overflow-x: auto; /* Enable horizontal scrolling */
+      white-space: nowrap; /* Prevent the navigation from wrapping to the next line */
     }
 
     nav ul li {
@@ -69,28 +73,40 @@
     }
 
     nav ul li a {
-      background-color: #4CAF50; /* Green background */
+      background-color: #4CAF50;
       color: white;
-      padding: 14px 20px;
+      padding: 12px 25px;
       text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
+      border-radius: 30px;
+      font-size: 18px;
+      margin: 0 10px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     nav ul li a:hover {
-      background-color: #45a049; /* Darker green on hover */
+      background-color: #45a049;
+      transform: translateY(-5px);
     }
 
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-      nav ul {
-        flex-wrap: nowrap;
-      }
+    /* Add a shadow effect when scrolling horizontally */
+    nav ul::-webkit-scrollbar {
+      height: 8px;
+    }
 
+    nav ul::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 10px;
+    }
+
+    nav ul::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
       nav ul li a {
-        font-size: 14px; /* Smaller text for mobile */
-        padding: 10px 15px;
+        font-size: 14px; /* Reduce font size for mobile */
+        padding: 10px 20px;
       }
     }
   </style>
@@ -98,11 +114,11 @@
 <body>
 
   <header>
-    <h1 class="fadeIn">Shubham Mahato</h1>
-    <p class="fadeIn">Innovator, Technologist, and Problem Solver</p>
+    <h1>Shubham Mahato</h1>
+    <p>Innovator, Technologist, and Problem Solver</p>
   </header>
 
-  <section id="intro" class="fadeIn">
+  <section id="intro">
     <h2>Welcome to My Portfolio</h2>
     <p>I am Shubham Mahato, a passionate innovator and technologist working on projects that leverage technology for social impact.</p>
   </section>
@@ -111,7 +127,7 @@
     <p>© 2025 Shubham Mahato. All rights reserved.</p>
   </footer>
 
-  <!-- Navigation Bar at the bottom (now with horizontal scrolling) -->
+  <!-- Horizontal Navigation Bar at the Bottom -->
   <nav>
     <ul>
       <li><a href="about.html">About Me</a></li>

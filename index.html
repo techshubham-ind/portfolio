@@ -52,13 +52,15 @@
     nav {
       background-color: #333;
       padding: 10px 0;
+      overflow-x: auto; /* Allow horizontal scrolling */
+      white-space: nowrap; /* Prevent wrapping */
     }
 
     nav ul {
       list-style: none;
       padding: 0;
-      display: flex;
-      justify-content: center;
+      margin: 0;
+      display: inline-flex;
       gap: 20px;
     }
 
@@ -79,6 +81,18 @@
     nav ul li a:hover {
       background-color: #45a049; /* Darker green on hover */
     }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        flex-wrap: nowrap;
+      }
+
+      nav ul li a {
+        font-size: 14px; /* Smaller text for mobile */
+        padding: 10px 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -97,7 +111,7 @@
     <p>© 2025 Shubham Mahato. All rights reserved.</p>
   </footer>
 
-  <!-- Navigation Bar at the bottom (as part of content, not fixed) -->
+  <!-- Navigation Bar at the bottom (now with horizontal scrolling) -->
   <nav>
     <ul>
       <li><a href="about.html">About Me</a></li>

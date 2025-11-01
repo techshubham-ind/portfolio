@@ -1,146 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shubham Mahato | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      text-align: center;
-      margin-top: 50px;
-      padding: 30px;
-    }
-
-    h1 {
-      font-size: 36px;
-      color: #333;
-    }
-
-    p {
-      font-size: 18px;
-      color: #555;
-    }
-
-    section#intro {
-      padding: 50px;
-      background-color: #fff;
-      margin: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      flex-grow: 1; /* Allow this section to take up space */
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #333;
-      color: white;
-    }
-
-    /* Navigation Styles */
-    nav {
-      background-color: #333;
-      padding: 10px 0;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      z-index: 100;
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      padding: 0;
-      margin: 0;
-      overflow-x: auto; /* Enable horizontal scrolling */
-      white-space: nowrap; /* Prevent the navigation from wrapping to the next line */
-    }
-
-    nav ul li {
-      display: inline-block;
-    }
-
-    nav ul li a {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 25px;
-      text-decoration: none;
-      border-radius: 30px;
-      font-size: 18px;
-      margin: 0 10px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    nav ul li a:hover {
-      background-color: #45a049;
-      transform: translateY(-5px);
-    }
-
-    /* Add a shadow effect when scrolling horizontally */
-    nav ul::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    nav ul::-webkit-scrollbar-thumb {
-      background-color: #888;
-      border-radius: 10px;
-    }
-
-    nav ul::-webkit-scrollbar-thumb:hover {
-      background-color: #555;
-    }
-
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-      nav ul li a {
-        font-size: 14px; /* Reduce font size for mobile */
-        padding: 10px 20px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubham Mahato - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <header>
-    <h1>Shubham Mahato</h1>
-    <p>Innovator, Technologist, and Problem Solver</p>
-  </header>
-
-  <section id="intro">
-    <h2>Welcome to My Portfolio</h2>
-    <p>I am Shubham Mahato, a passionate innovator and technologist working on projects that leverage technology for social impact.</p>
-  </section>
-
-  <footer>
-    <p>© 2025 Shubham Mahato. All rights reserved.</p>
-  </footer>
-
-  <!-- Horizontal Navigation Bar at the Bottom -->
-  <nav>
-    <ul>
-      <li><a href="about.html">About Me</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="achievements.html">Achievements</a></li>
-      <li><a href="skills.html">Skills</a></li>
-      <li><a href="publications.html">Publications</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="testimonials.html">Testimonials</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-
+    <!-- Loading Screen with Pulsing Particles -->
+    <div id="loading">
+        <div class="logo">Loading...</div>
+        <div class="particles"></div>
+    </div>
+    
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    
+    <!-- Sidebar Menu -->
+    <div id="sidebar">
+        <ul>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="achievements.html">Achievements</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+    
+    <header>
+        <!-- Background Video for Immersion (Replace with your video) -->
+        <video autoplay muted loop id="bg-video">
+            <source src="placeholder.mp4" type="video/mp4">
+            <!-- Fallback Image -->
+            <img src="placeholder.jpg" alt="Background">
+        </video>
+        <div class="overlay">
+            <h1 id="typing-text"></h1>
+            <p>Tech Enthusiast | Programmer | IIT Bombay 2nd Runner-Up</p>
+            <img src="placeholder.jpg" alt="Shubham Mahato Profile Photo" loading="lazy">
+        </div>
+    </header>
+    
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <footer>
+        <p>&copy; 2023 Shubham Mahato. All rights reserved.</p>
+    </footer>
+    
+    <script src="script.js"></script>
 </body>
 </html>

@@ -4,54 +4,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shubham Mahato - Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Reset and Base Styles - Ensures consistent layout across browsers */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); 
+            color: #e0e0e0; 
+            overflow-x: hidden; 
+            line-height: 1.6; 
+            /* Initially hide body for loading animation */
+            opacity: 0; 
+            transition: opacity 1s ease; 
+        }
+        /* Show body after loading */
+        body.loaded { opacity: 1; }
+        
+        /* Loading Screen Animation - Cool intro like Techfest's dynamic start */
+        #loading { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(135deg, #0a0a0a, #16213e); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 9999; 
+            transition: opacity 1s ease; 
+        }
+        #loading.hidden { opacity: 0; pointer-events: none; }
+        #loading .logo { 
+            font-size: 3em; color: #00d4ff; 
+            text-shadow: 0 0 20px #00d4ff; 
+            animation: pulse 2s infinite; 
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        /* Floating particles for extra flair */
+        #loading::before { 
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%2300d4ff" opacity="0.5"/></svg>') repeat; 
+            animation: floatParticles 10s infinite linear; 
+        }
+        @keyframes floatParticles { 0% { transform: translateY(0); } 100% { transform: translateY(-100px); } }
+        
+        /* Hamburger Menu Styles - The "3 lines" icon for toggling sections */
+        .hamburger { 
+            display: block; position: fixed; top: 20px; right: 20px; z-index: 1000; 
+            cursor: pointer; 
+        }
+        .hamburger div { 
+            width: 30px; height: 3px; background: #00d4ff; margin: 5px; 
+            transition: 0.3s; 
+        }
+        .hamburger.active div:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+        .hamburger.active div:nth-child(2) { opacity: 0; }
+        .hamburger.active div:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+        /* Sidebar for menu items */
+        #sidebar { 
+            position: fixed; top: 0; right: -300px; width: 300px; height: 100%; 
+            background: rgba(0, 0, 0, 0.9); padding: 20px; 
+            transition: right 0.3s ease; z-index: 999; 
+            border-left: 2px solid #00d4ff; 
+        }
+        #sidebar.active { right: 0; }
+        #sidebar ul { list-style: none; }
+        #sidebar li { margin: 20px 0; }
+        #sidebar a { color: #00d4ff; text-decoration: none; font-size: 1.2em; }
+        #sidebar a:hover { color: #ff6b6b; }
+        
+        /* Neon Glow Effect - For techy highlights */
+        .neon { 
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff; 
+            color: #00d4ff; 
+        }
+        
+        /* Header with Gradient and Animation */
+        header { 
+            background: linear-gradient(45deg, #16213e, #0f3460); 
+            text-align: center; 
+            padding: 80px 20px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        header h1 { font-size: 3em; margin-bottom: 10px; class: neon; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        /* Profile Photo in Header - Add your image here */
+        header img { 
+            width: 150px; height: 150px; border-radius: 50%; 
+            border: 3px solid #00d4ff; margin-top: 20px; 
+            box-shadow: 0 0 20px #00d4ff; 
+        }
+        
+        /* Section Styles - Initially hidden, shown via menu */
+        section { 
+            padding: 40px 20px; 
+            margin: 40px auto; 
+            max-width: 900px; 
+            background: rgba(255, 255, 255, 0.05); 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(0, 212, 255, 0.2); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            /* Hidden by default */
+            display: none; 
+        }
+        section.active { display: block; } /* Shown when toggled */
+        section:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3); 
+        }
+        h2 { 
+            color: #ff6b6b; 
+            font-size: 2em; 
+            margin-bottom: 20px; 
+            text-align: center; 
+            text-shadow: 0 0 10px #ff6b6b; 
+        }
+        
+        /* List and Content */
+        ul { list-style: none; padding: 0; }
+        li { margin: 15px 0; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border-left: 4px solid #00d4ff; }
+        li:hover { background: rgba(0, 212, 255, 0.1); transform: scale(1.02); transition: 0.3s; }
+        a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
+        a:hover { color: #ff6b6b; text-shadow: 0 0 10px #ff6b6b; }
+        
+        /* Highlight Class */
+        .highlight { font-weight: bold; color: #ff6b6b; text-shadow: 0 0 10px #ff6b6b; }
+        
+        /* Photos in Sections - Add images here (e.g., for projects or achievements) */
+        .section-img { 
+            width: 100%; max-width: 300px; height: auto; border-radius: 10px; 
+            margin: 10px auto; display: block; border: 2px solid #00d4ff; 
+            box-shadow: 0 0 15px #00d4ff; 
+        }
+        
+        /* Footer */
+        footer { 
+            text-align: center; 
+            padding: 30px; 
+            background: linear-gradient(45deg, #0f3460, #16213e); 
+            color: #e0e0e0; 
+            border-top: 1px solid rgba(0, 212, 255, 0.2); 
+        }
+        
+        /* Button Animation */
+        .btn { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            background: linear-gradient(45deg, #00d4ff, #ff6b6b); 
+            color: white; 
+            border-radius: 25px; 
+            text-decoration: none; 
+            margin: 10px; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3); 
+        }
+        .btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4); 
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) { 
+            header h1 { font-size: 2em; } 
+            section { margin: 20px; padding: 20px; } 
+            #sidebar { width: 250px; } 
+        }
+    </style>
 </head>
 <body>
-    <!-- Loading Screen with Pulsing Particles -->
+    <!-- Loading Screen - Shows on page load with animation -->
     <div id="loading">
-        <div class="logo">Loading...</div>
-        <div class="particles"></div>
+        <div class="logo">Shubham Mahato</div>
     </div>
     
-    <!-- Hamburger Menu -->
+    <!-- Hamburger Menu - 3 lines to toggle sections -->
     <div class="hamburger" id="hamburger">
         <div></div>
         <div></div>
         <div></div>
     </div>
     
-    <!-- Sidebar Menu -->
+    <!-- Sidebar for Menu - Lists sections to show/hide -->
     <div id="sidebar">
         <ul>
-            <li><a href="about.html">About Me</a></li>
-            <li><a href="skills.html">Skills</a></li>
-            <li><a href="achievements.html">Achievements</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#" onclick="toggleSection('about')">About Me</a></li>
+            <li><a href="#" onclick="toggleSection('skills')">Skills</a></li>
+            <li><a href="#" onclick="toggleSection('achievements')">Achievements</a></li>
+            <li><a href="#" onclick="toggleSection('projects')">Projects</a></li>
+            <li><a href="#" onclick="toggleSection('contact')">Contact</a></li>
         </ul>
     </div>
     
     <header>
-        <!-- Background Video for Immersion (Replace with your video) -->
-        <video autoplay muted loop id="bg-video">
-            <source src="placeholder.mp4" type="video/mp4">
-            <!-- Fallback Image -->
-            <img src="placeholder.jpg" alt="Background">
-        </video>
-        <div class="overlay">
-            <h1 id="typing-text"></h1>
-            <p>Tech Enthusiast | Programmer | IIT Bombay 2nd Runner-Up</p>
-            <img src="placeholder.jpg" alt="Shubham Mahato Profile Photo" loading="lazy">
-        </div>
+        <h1 class="neon">Shubham Mahato</h1>
+        <p>Tech Enthusiast | Programmer | IIT Bombay 2nd Runner-Up</p>
+        <!-- Profile Photo - Replace 'placeholder.jpg' with your image URL -->
+        <img src="placeholder.jpg" alt="Shubham Mahato Profile Photo">
     </header>
     
-    <!-- Particle Background -->
-    <canvas id="particle-canvas"></canvas>
+    <!-- Sections - Hidden by default, shown when menu item is clicked -->
+    <section id="about">
+        <h2>About Me</h2>
+        <p>Hi, I'm Shubham Mahato, a passionate tech enthusiast with a keen interest in programming, AI, and innovative solutions. I'm proud to have been the <span class="highlight">2nd runner-up at IIT Bombay</span> in a competitive tech event, where I showcased my skills in coding and problem-solving. Currently pursuing opportunities in software development and machine learning, I love building projects that make a difference.</p>
+        <!-- Optional Photo - E.g., a background image or avatar -->
+        <img src="placeholder.jpg" alt="About Me Image" class="section-img">
+    </section>
+    
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul>
+            <li>Programming Languages: Python, JavaScript, C++</li>
+            <li>Web Development: HTML, CSS, React, Node.js</li>
+            <li>AI/ML: Basics in TensorFlow, Data Analysis</li>
+            <li>Tools: Git, GitHub, VS Code</li>
+            <li>Other: Problem-Solving, Team Collaboration</li>
+        </ul>
+    </section>
+    
+    <section id="achievements">
+        <h2>Achievements</h2>
+        <ul>
+            <li><span class="highlight">2nd Runner-Up at IIT Bombay</span> - Participated in a prestigious tech competition, demonstrating innovative coding skills.</li>
+            <li>Active Contributor on GitHub - Open-source projects in web apps and algorithms.</li>
+            <li>[Add more: e.g., Certifications, Hackathons]</li>
+        </ul>
+        <!-- Achievement Photo - E.g., certificate image -->
+        <img src="placeholder.jpg" alt="Achievement Certificate" class="section-img">
+    </section>
+    
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+            <li><strong>Project 1: AI Chatbot</strong> - Built a simple chatbot using Python and NLP libraries. <a href="[Your GitHub Link]" class="btn">View on GitHub</a></li>
+            <li><strong>Project 2: Web Portfolio</strong> - This very site! A responsive portfolio using HTML/CSS. <a href="[Live Demo Link]" class="btn">Live Demo</a></li>
+            <li><strong>Project 3: Data Visualization App</strong> - Created a dashboard for visualizing datasets with JavaScript. <a href="[Link]" class="btn">GitHub Repo</a></li>
+            <li>[Add more projects from your LinkedIn or GitHub]</li>
+        </ul>
+        <!-- Project Photo - E.g., screenshot of your app -->
+        <img src="placeholder.jpg" alt="Project Screenshot" class="section-img">
+    </section>
+    
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:shubham.mahato@example.com" class="btn">Send Email</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/shubham-mahato" class="btn">Connect on LinkedIn</a></p>
+        <p>GitHub: <a href="https://github.com/shubham-mahato" class="btn">Follow on GitHub</a></p>
+        <p>[Add other: e.g., Twitter, Portfolio Site]</p>
+    </section>
     
     <footer>
         <p>&copy; 2023 Shubham Mahato. All rights reserved.</p>
     </footer>
-    
-    <script src="script.js"></script>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Loading Animation - Hide loading screen after 3 seconds and show body
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+                document.body.classList.add('loaded');
+            }, 3000); // Adjust time as needed
+        });
+        
+        // Hamburger Menu Toggle - Animate the 3 lines and show/hide sidebar
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        });
+        
+        // Function to Toggle Sections - Called from sidebar links
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('active');
+            // Optional: Close sidebar after selecting
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+        }
+        
+        // Optional: Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
 </body>
-</html>

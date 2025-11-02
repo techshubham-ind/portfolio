@@ -1,292 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shubham Mahato - Portfolio</title>
-    <style>
-        /* Reset and Base Styles - Ensures consistent layout across browsers */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); 
-            color: #e0e0e0; 
-            overflow-x: hidden; 
-            line-height: 1.6; 
-            /* Initially hide body for loading animation */
-            opacity: 0; 
-            transition: opacity 1s ease; 
-        }
-        /* Show body after loading */
-        body.loaded { opacity: 1; }
-        
-        /* Loading Screen Animation - Cool intro like Techfest's dynamic start */
-        #loading { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, #0a0a0a, #16213e); 
-            display: flex; align-items: center; justify-content: center; 
-            z-index: 9999; 
-            transition: opacity 1s ease; 
-        }
-        #loading.hidden { opacity: 0; pointer-events: none; }
-        #loading .logo { 
-            font-size: 3em; color: #00d4ff; 
-            text-shadow: 0 0 20px #00d4ff; 
-            animation: pulse 2s infinite; 
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        /* Floating particles for extra flair */
-        #loading::before { 
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%2300d4ff" opacity="0.5"/></svg>') repeat; 
-            animation: floatParticles 10s infinite linear; 
-        }
-        @keyframes floatParticles { 0% { transform: translateY(0); } 100% { transform: translateY(-100px); } }
-        
-        /* Hamburger Menu Styles - The "3 lines" icon for toggling sections */
-        .hamburger { 
-            display: block; position: fixed; top: 20px; right: 20px; z-index: 1000; 
-            cursor: pointer; 
-        }
-        .hamburger div { 
-            width: 30px; height: 3px; background: #00d4ff; margin: 5px; 
-            transition: 0.3s; 
-        }
-        .hamburger.active div:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
-        .hamburger.active div:nth-child(2) { opacity: 0; }
-        .hamburger.active div:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
-        /* Sidebar for menu items */
-        #sidebar { 
-            position: fixed; top: 0; right: -300px; width: 300px; height: 100%; 
-            background: rgba(0, 0, 0, 0.9); padding: 20px; 
-            transition: right 0.3s ease; z-index: 999; 
-            border-left: 2px solid #00d4ff; 
-        }
-        #sidebar.active { right: 0; }
-        #sidebar ul { list-style: none; }
-        #sidebar li { margin: 20px 0; }
-        #sidebar a { color: #00d4ff; text-decoration: none; font-size: 1.2em; }
-        #sidebar a:hover { color: #ff6b6b; }
-        
-        /* Neon Glow Effect - For techy highlights */
-        .neon { 
-            text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff; 
-            color: #00d4ff; 
-        }
-        
-        /* Header with Gradient and Animation */
-        header { 
-            background: linear-gradient(45deg, #16213e, #0f3460); 
-            text-align: center; 
-            padding: 80px 20px; 
-            position: relative; 
-            overflow: hidden; 
-        }
-        header h1 { font-size: 3em; margin-bottom: 10px; class: neon; }
-        header p { font-size: 1.2em; opacity: 0.9; }
-        /* Profile Photo in Header - Add your image here */
-        header img { 
-            width: 150px; height: 150px; border-radius: 50%; 
-            border: 3px solid #00d4ff; margin-top: 20px; 
-            box-shadow: 0 0 20px #00d4ff; 
-        }
-        
-        /* Section Styles - Initially hidden, shown via menu */
-        section { 
-            padding: 40px 20px; 
-            margin: 40px auto; 
-            max-width: 900px; 
-            background: rgba(255, 255, 255, 0.05); 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(0, 212, 255, 0.2); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            /* Hidden by default */
-            display: none; 
-        }
-        section.active { display: block; } /* Shown when toggled */
-        section:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3); 
-        }
-        h2 { 
-            color: #ff6b6b; 
-            font-size: 2em; 
-            margin-bottom: 20px; 
-            text-align: center; 
-            text-shadow: 0 0 10px #ff6b6b; 
-        }
-        
-        /* List and Content */
-        ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border-left: 4px solid #00d4ff; }
-        li:hover { background: rgba(0, 212, 255, 0.1); transform: scale(1.02); transition: 0.3s; }
-        a { color: #00d4ff; text-decoration: none; transition: color 0.3s; }
-        a:hover { color: #ff6b6b; text-shadow: 0 0 10px #ff6b6b; }
-        
-        /* Highlight Class */
-        .highlight { font-weight: bold; color: #ff6b6b; text-shadow: 0 0 10px #ff6b6b; }
-        
-        /* Photos in Sections - Add images here (e.g., for projects or achievements) */
-        .section-img { 
-            width: 100%; max-width: 300px; height: auto; border-radius: 10px; 
-            margin: 10px auto; display: block; border: 2px solid #00d4ff; 
-            box-shadow: 0 0 15px #00d4ff; 
-        }
-        
-        /* Footer */
-        footer { 
-            text-align: center; 
-            padding: 30px; 
-            background: linear-gradient(45deg, #0f3460, #16213e); 
-            color: #e0e0e0; 
-            border-top: 1px solid rgba(0, 212, 255, 0.2); 
-        }
-        
-        /* Button Animation */
-        .btn { 
-            display: inline-block; 
-            padding: 10px 20px; 
-            background: linear-gradient(45deg, #00d4ff, #ff6b6b); 
-            color: white; 
-            border-radius: 25px; 
-            text-decoration: none; 
-            margin: 10px; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3); 
-        }
-        .btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4); 
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) { 
-            header h1 { font-size: 2em; } 
-            section { margin: 20px; padding: 20px; } 
-            #sidebar { width: 250px; } 
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Shubham Mahato — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-dark:#05060a;
+    --panel: rgba(18,20,36,0.6);
+    --neon-cyan:#00d4ff;
+    --neon-purple:#c952ff;
+    --muted:#bfc8d6;
+  }
+  /* RESET */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(180deg,#020203 0%, #071029 100%);
+    color:#e6eef8;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transition:opacity .9s ease;
+    opacity:0;
+  }
+
+  /* ---------------- Intro overlay (cinematic) ---------------- */
+  #intro {
+    position:fixed; inset:0; z-index:12000;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    background: linear-gradient(180deg, rgba(2,6,10,1), rgba(5,8,20,1));
+    gap:20px;
+  }
+  #intro .title {
+    font-size: clamp(28px, 5vw, 54px);
+    letter-spacing:6px;
+    color:var(--neon-cyan);
+    text-transform:uppercase;
+    font-weight:700;
+    text-shadow:0 0 14px rgba(0,212,255,0.35), 0 0 30px rgba(201,82,255,0.08);
+    transform:translateY(6px);
+    opacity:0;
+    animation: introTextIn .9s ease forwards .35s;
+  }
+  @keyframes introTextIn { to { opacity:1; transform:translateY(0); } }
+
+  /* dissolving particles ring */
+  #intro .ring {
+    width: 240px; height:240px; border-radius:50%;
+    position:relative;
+    display:grid; place-items:center;
+    filter: blur(6px) contrast(120%);
+    opacity:.9;
+  }
+  /* small subtitle */
+  #intro .sub {
+    color:var(--muted);
+    opacity:.85;
+    font-weight:500;
+    letter-spacing:.6px;
+    transform:translateY(6px);
+    animation: introTextIn .9s ease forwards .5s;
+  }
+  /* fade out animation class used in JS */
+  .fade-out { animation: fadeOut 1s ease forwards; }
+  @keyframes fadeOut { to { opacity:0; transform:scale(.995); pointer-events:none } }
+
+  /* ---------------- Background canvas layers ---------------- */
+  /* We have two canvases stacked: network + orbs (same canvas used in code but layer here for z) */
+  .bg-canvas {
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+  }
+
+  /* ---------------- Header & hamburger ---------------- */
+  header{
+    padding: 64px 24px 32px;
+    max-width:1200px; margin: 0 auto;
+    display:flex; gap:24px; align-items:center; justify-content:space-between;
+  }
+  .brand {
+    display:flex; gap:16px; align-items:center;
+  }
+  .brand .avatar{
+    width:72px; height:72px; border-radius:12px; overflow:hidden;
+    border:2px solid rgba(0,212,255,0.2); box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  }
+  .brand .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .brand .texts { line-height:1; }
+  .brand .texts h1 { font-size:18px; color:var(--neon-cyan); letter-spacing:0.6px; }
+  .brand .texts p { font-size:13px; color:var(--muted); opacity:.9 }
+
+  /* HAMBURGER - keeps the three-line icon */
+  .hamburger {
+    display:flex; flex-direction:column; gap:6px; cursor:pointer;
+    width:44px; height:36px; padding:6px; align-items:flex-end;
+    z-index:11000;
+  }
+  .hamburger .bar{ width:30px; height:3px; background:var(--neon-cyan); border-radius:3px; transition:all .35s; }
+  .hamburger.active .bar:nth-child(1){ transform: translateY(6px) rotate(-45deg) }
+  .hamburger.active .bar:nth-child(2){ opacity:0 }
+  .hamburger.active .bar:nth-child(3){ transform: translateY(-6px) rotate(45deg) }
+
+  /* Sidebar drawer */
+  #sidebar {
+    position:fixed; right:-320px; top:0; height:100vh; width:320px;
+    background: linear-gradient(180deg, rgba(3,6,13,0.95), rgba(6,10,22,0.95));
+    border-left:1px solid rgba(0,212,255,0.06);
+    padding:36px 20px; z-index:10900; transition:right .32s ease;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  #sidebar.open{ right:0 }
+  #sidebar a{ color:var(--neon-cyan); font-weight:600; text-decoration:none; font-size:16px }
+  #sidebar small{ color:var(--muted); display:block; margin-top:8px }
+
+  /* ---------------- Main content sections ---------------- */
+  main{ padding: 10px 20px 96px; max-width:1200px; margin:0 auto; }
+  .section {
+    margin:40px auto; padding:28px; border-radius:14px;
+    background: linear-gradient(180deg, rgba(10,12,26,0.54), rgba(6,8,18,0.34));
+    border: 1px solid rgba(0,212,255,0.06);
+    box-shadow: 0 10px 34px rgba(2,6,12,0.6);
+    transition: transform .8s cubic-bezier(.2,.9,.2,1), opacity .8s ease;
+    transform: translateY(24px);
+    opacity:0;
+  }
+  .section.visible { transform:none; opacity:1 }
+
+  .section h2 {
+    font-size:20px; color:var(--neon-cyan); margin-bottom:12px;
+    text-shadow:0 0 12px rgba(0,212,255,0.15);
+  }
+  .section p{ color:var(--muted); line-height:1.6; font-size:15px }
+
+  /* ---------------- Image box & gallery ---------------- */
+  .img-box{
+    border-radius:12px; overflow:hidden; display:block; width:100%;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(0,212,255,0.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    transition: transform .45s ease, box-shadow .45s ease;
+  }
+  .img-box:hover{ transform:translateY(-6px) scale(1.02); box-shadow:0 18px 60px rgba(0,212,255,0.06) }
+  .img-box img{ width:100%; height:100%; display:block; object-fit:cover; aspect-ratio:16/9 }
+
+  /* Projects gallery grid (multiple photos) */
+  .project-grid{
+    display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    margin-top:16px;
+  }
+  .project-card{ background:var(--panel); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02) }
+  .project-card h3{ margin-bottom:8px; color:var(--neon-purple) }
+  .thumb-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px }
+  .thumb-grid button{ padding:0; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.02); cursor:pointer; background:transparent }
+
+  /* small meta row */
+  .meta{ display:flex; gap:8px; align-items:center; margin-top:12px }
+  .meta span{ font-size:13px; color:var(--muted) }
+
+  /* ---------------- Lightbox modal ---------------- */
+  .lightbox {
+    position:fixed; inset:0; background:linear-gradient(180deg, rgba(1,1,2,0.85), rgba(2,6,12,0.9));
+    display:none; place-items:center; z-index:13000;
+  }
+  .lightbox.show{ display:grid }
+  .lightbox img{ max-width:92vw; max-height:86vh; border-radius:10px; box-shadow:0 18px 60px rgba(0,0,0,0.6) }
+
+  /* ---------------- Footer ---------------- */
+  footer{ margin-top:36px; text-align:center; color:var(--muted); font-size:14px; padding:30px 0 }
+
+  /* responsive tweaks */
+  @media (max-width:800px){
+    header{ padding:28px 16px }
+    .brand .texts h1{ font-size:16px }
+    .project-grid{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)) }
+  }
+</style>
 </head>
 <body>
-    <!-- Loading Screen - Shows on page load with animation -->
-    <div id="loading">
-        <div class="logo">Shubham Mahato</div>
-    </div>
-    
-    <!-- Hamburger Menu - 3 lines to toggle sections -->
-    <div class="hamburger" id="hamburger">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-    
-    <!-- Sidebar for Menu - Lists sections to show/hide -->
-    <div id="sidebar">
-        <ul>
-            <li><a href="#" onclick="toggleSection('about')">About Me</a></li>
-            <li><a href="#" onclick="toggleSection('skills')">Skills</a></li>
-            <li><a href="#" onclick="toggleSection('achievements')">Achievements</a></li>
-            <li><a href="#" onclick="toggleSection('projects')">Projects</a></li>
-            <li><a href="#" onclick="toggleSection('contact')">Contact</a></li>
-        </ul>
-    </div>
-    
-    <header>
-        <h1 class="neon">Shubham Mahato</h1>
-        <p>Tech Enthusiast | Programmer | IIT Bombay 2nd Runner-Up</p>
-        <!-- Profile Photo - Replace 'placeholder.jpg' with your image URL -->
-        <img src="placeholder.jpg" alt="Shubham Mahato Profile Photo">
-    </header>
-    
-    <!-- Sections - Hidden by default, shown when menu item is clicked -->
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hi, I'm Shubham Mahato, a passionate tech enthusiast with a keen interest in programming, AI, and innovative solutions. I'm proud to have been the <span class="highlight">2nd runner-up at IIT Bombay</span> in a competitive tech event, where I showcased my skills in coding and problem-solving. Currently pursuing opportunities in software development and machine learning, I love building projects that make a difference.</p>
-        <!-- Optional Photo - E.g., a background image or avatar -->
-        <img src="placeholder.jpg" alt="About Me Image" class="section-img">
-    </section>
-    
-    <section id="skills">
-        <h2>Skills</h2>
-        <ul>
-            <li>Programming Languages: Python, JavaScript, C++</li>
-            <li>Web Development: HTML, CSS, React, Node.js</li>
-            <li>AI/ML: Basics in TensorFlow, Data Analysis</li>
-            <li>Tools: Git, GitHub, VS Code</li>
-            <li>Other: Problem-Solving, Team Collaboration</li>
-        </ul>
-    </section>
-    
-    <section id="achievements">
-        <h2>Achievements</h2>
-        <ul>
-            <li><span class="highlight">2nd Runner-Up at IIT Bombay</span> - Participated in a prestigious tech competition, demonstrating innovative coding skills.</li>
-            <li>Active Contributor on GitHub - Open-source projects in web apps and algorithms.</li>
-            <li>[Add more: e.g., Certifications, Hackathons]</li>
-        </ul>
-        <!-- Achievement Photo - E.g., certificate image -->
-        <img src="placeholder.jpg" alt="Achievement Certificate" class="section-img">
-    </section>
-    
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li><strong>Project 1: AI Chatbot</strong> - Built a simple chatbot using Python and NLP libraries. <a href="[Your GitHub Link]" class="btn">View on GitHub</a></li>
-            <li><strong>Project 2: Web Portfolio</strong> - This very site! A responsive portfolio using HTML/CSS. <a href="[Live Demo Link]" class="btn">Live Demo</a></li>
-            <li><strong>Project 3: Data Visualization App</strong> - Created a dashboard for visualizing datasets with JavaScript. <a href="[Link]" class="btn">GitHub Repo</a></li>
-            <li>[Add more projects from your LinkedIn or GitHub]</li>
-        </ul>
-        <!-- Project Photo - E.g., screenshot of your app -->
-        <img src="placeholder.jpg" alt="Project Screenshot" class="section-img">
-    </section>
-    
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:shubham.mahato@example.com" class="btn">Send Email</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/shubham-mahato" class="btn">Connect on LinkedIn</a></p>
-        <p>GitHub: <a href="https://github.com/shubham-mahato" class="btn">Follow on GitHub</a></p>
-        <p>[Add other: e.g., Twitter, Portfolio Site]</p>
-    </section>
-    
-    <footer>
-        <p>&copy; 2023 Shubham Mahato. All rights reserved.</p>
-    </footer>
 
-    <!-- JavaScript for Interactivity -->
-    <script>
-        // Loading Animation - Hide loading screen after 3 seconds and show body
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
-                document.body.classList.add('loaded');
-            }, 3000); // Adjust time as needed
-        });
-        
-        // Hamburger Menu Toggle - Animate the 3 lines and show/hide sidebar
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            sidebar.classList.toggle('active');
-        });
-        
-        // Function to Toggle Sections - Called from sidebar links
-        function toggleSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.classList.toggle('active');
-            // Optional: Close sidebar after selecting
-            hamburger.classList.remove('active');
-            sidebar.classList.remove('active');
-        }
-        
-        // Optional: Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                hamburger.classList.remove('active');
-                sidebar.classList.remove('active');
-            }
-        });
-    </script>
+<!-- INTRO SCREEN (cinematic) -->
+<div id="intro" aria-hidden="false">
+  <!-- ring particles (canvas rendered behind via JS) -->
+  <div class="ring" id="intro-ring" aria-hidden="true"></div>
+  <div class="title">SHUBHAM MAHATO</div>
+  <div class="sub">Innovator · Robotics · AI · Sustainability</div>
+</div>
+
+<!-- BACKGROUND CANVAS (network + orbs combined) -->
+<canvas id="bgCanvas" class="bg-canvas"></canvas>
+
+<!-- Header with 3-line hamburger -->
+<header>
+  <div class="brand">
+    <div class="avatar">
+      <!-- PROFILE PHOTO: Replace images/profile.jpg with your photo -->
+      <img src="images/profile.jpg" alt="Shubham Mahato">
+    </div>
+    <div class="texts">
+      <h1>Shubham Mahato</h1>
+      <p>Tech Enthusiast • Inventor • Smog Hawk</p>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:14px;">
+    <!-- small nav links for big screens -->
+    <nav style="display:flex; gap:18px; align-items:center;">
+      <a href="#about" style="color:var(--muted); text-decoration:none; font-weight:600">About</a>
+      <a href="#projects" style="color:var(--muted); text-decoration:none; font-weight:600">Projects</a>
+      <a href="#achievements" style="color:var(--muted); text-decoration:none; font-weight:600">Achievements</a>
+    </nav>
+
+    <!-- Hamburger (3 lines must remain) -->
+    <div class="hamburger" id="hamburger" aria-label="Toggle menu" title="Menu">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Sidebar drawer (opens when hamburger clicked) -->
+<div id="sidebar" aria-hidden="true">
+  <a href="#about" onclick="closeSidebar()">About</a>
+  <a href="#projects" onclick="closeSidebar()">Projects</a>
+  <a href="#achievements" onclick="closeSidebar()">Achievements</a>
+  <a href="#contact" onclick="closeSidebar()">Contact</a>
+  <small style="margin-top:14px;color:var(--muted)">Replace links above with your social links / sections.</small>
+</div>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <h2>About Me</h2>
+
+    <!-- Image placeholder #1 -->
+    <div class="img-box" style="max-width:900px; margin:14px auto;">
+      <!-- Replace images/about-1.jpg with your portrait or working photo -->
+      <img src="images/about-1.jpg" alt="About — Shubham Mahato">
+    </div>
+
+    <p>Hello — I’m <strong>Shubham Mahato</strong>. I design scalable hardware-software systems for environmental sensing, robotics and community impact. My project “Sanrakkhan (Smog Hawk)” uses drones and multi-sensor payloads to map air pollution and inform agricultural decisions. I like clean code, efficient hardware, open collaboration and mentoring younger makers.</p>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+
+    <p style="color:var(--muted)">Click any thumbnail to enlarge. Add multiple images per project below (place them in <code>images/</code> and update the <code>data-src</code> attributes).</p>
+
+    <!-- PROJECT GRID -->
+    <div class="project-grid" id="projectGrid">
+
+      <!-- ---------- Project Card (repeat/update for more) ---------- -->
+      <div class="project-card">
+        <h3>Sanrakkhan — Smog Hawk</h3>
+        <div class="thumb-grid">
+          <!-- Thumbnail buttons open lightbox. Update these src/data-src with your images -->
+          <button data-src="images/smoghawk-1.jpg" aria-label="Open image 1"><img src="images/smoghawk-1-thumb.jpg" alt="Smog Hawk"></button>
+          <button data-src="images/smoghawk-2.jpg" aria-label="Open image 2"><img src="images/smoghawk-2-thumb.jpg" alt="Smog Hawk"></button>
+          <button data-src="images/smoghawk-3.jpg" aria-label="Open image 3"><img src="images/smoghawk-3-thumb.jpg" alt="Smog Hawk"></button>
+          <button data-src="images/smoghawk-4.jpg" aria-label="Open image 4"><img src="images/smoghawk-4-thumb.jpg" alt="Smog Hawk"></button>
+        </div>
+        <div class="meta">
+          <span>Drone-based multi-sensor AQI mapping · Patent pending</span>
+        </div>
+      </div>
+
+      <!-- Another project -->
+      <div class="project-card">
+        <h3>Seismograph — MPU-6050</h3>
+        <div class="thumb-grid">
+          <button data-src="images/seismo-1.jpg"><img src="images/seismo-1-thumb.jpg" alt="Seismograph"></button>
+          <button data-src="images/seismo-2.jpg"><img src="images/seismo-2-thumb.jpg" alt="Seismograph"></button>
+        </div>
+        <div class="meta"><span>Real-time vibration plotting on OLED</span></div>
+      </div>
+
+      <!-- Add more project-cards below following the same structure -->
+      <!-- Example: copy the entire project-card block and replace image paths & text -->
+
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements" class="section">
+    <h2>Achievements</h2>
+
+    <!-- Image placeholder #3 -->
+    <div class="img-box" style="max-width:880px; margin:14px auto;">
+      <!-- Replace images/achievements.jpg with your certificate / news clipping -->
+      <img src="images/achievements.jpg" alt="Achievements">
+    </div>
+
+    <ul style="margin-top:12px; color:var(--muted); line-height:1.7">
+      <li>🏆 2nd Runner-Up — Techfest, IIT Bombay (2024/2025)</li>
+      <li>📜 Patent filed — Drone-based pollution monitoring</li>
+      <li>🌱 Projects aimed at sustainable rural & agricultural impact</li>
+    </ul>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+
+    <div class="img-box" style="max-width:900px; margin:14px auto;">
+      <!-- Replace images/contact-banner.jpg with a background / contact image -->
+      <img src="images/contact-banner.jpg" alt="Contact">
+    </div>
+
+    <p style="color:var(--muted)">Email: <a href="mailto:shubhammahato8597@gmail.com" style="color:var(--neon-cyan)">shubhammahato8597@gmail.com</a></p>
+    <p style="color:var(--muted)">Mobile: +91 8597688182</p>
+    <p style="color:var(--muted)">GitHub: <a href="https://github.com/shubham-mahato" style="color:var(--neon-cyan)">github.com/shubham-mahato</a></p>
+  </section>
+
+</main>
+
+<footer>
+  © 2025 Shubham Mahato · Built with passion & curiosity
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox" role="dialog" aria-hidden="true" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="Expanded project image">
+</div>
+
+<script>
+/* ===================== Page lifecycle & intro ===================== */
+const intro = document.getElementById('intro');
+const body = document.body;
+
+// After page resources load, play intro (simulate cinematic timing)
+window.addEventListener('load', () => {
+  // Intro visible for ~2.5s then dissolve
+  setTimeout(() => {
+    intro.classList.add('fade-out');
+    setTimeout(() => {
+      intro.style.display = 'none';
+      body.style.opacity = '1';
+      // reveal initial sections
+      revealOnScroll();
+    }, 1000);
+  }, 2400);
+});
+
+/* ===================== Sidebar (hamburger) ===================== */
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  sidebar.classList.toggle('open');
+  sidebar.setAttribute('aria-hidden', sidebar.classList.contains('open') ? 'false' : 'true');
+});
+function closeSidebar(){ hamburger.classList.remove('active'); sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true') }
+
+/* ===================== Reveal on scroll ===================== */
+const sections = document.querySelectorAll('.section');
+function revealOnScroll(){
+  const trigger = window.innerHeight * 0.85;
+  sections.forEach((sec,i) => {
+    const top = sec.getBoundingClientRect().top;
+    // Staggered delay effect using timeout when revealing
+    if(top < trigger && !sec.classList.contains('visible')){
+      setTimeout(()=> sec.classList.add('visible'), i*140);
+    }
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('resize', revealOnScroll);
+
+/* ===================== Lightbox (click thumbnails) ===================== */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+document.querySelectorAll('[data-src]').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    const src = btn.getAttribute('data-src');
+    lightboxImg.src = src;
+    lightbox.classList.add('show');
+    lightbox.setAttribute('aria-hidden','false');
+  });
+});
+function closeLightbox(){
+  lightbox.classList.remove('show');
+  lightbox.setAttribute('aria-hidden','true');
+  lightboxImg.src = '';
+}
+
+/* ===================== Background Canvas: network + floating orbs ===================== */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+
+let W = canvas.width = innerWidth;
+let H = canvas.height = innerHeight;
+
+// Node settings
+const NODE_COUNT = Math.min(120, Math.floor(W*H/90000)); // scale nodes to screen size
+const nodes = [];
+const orbs = [];
+
+// create nodes and orbs
+for(let i=0;i<NODE_COUNT;i++){
+  nodes.push({
+    x: Math.random()*W,
+    y: Math.random()*H,
+    vx: (Math.random()-0.5)*0.35,
+    vy: (Math.random()-0.5)*0.35,
+    r: 1.2 + Math.random()*1.8
+  });
+}
+// floating glowing orbs
+for(let j=0;j<12;j++){
+  orbs.push({
+    x: Math.random()*W,
+    y: Math.random()*H,
+    r: 12 + Math.random()*38,
+    vx: (Math.random()-0.5)*0.15,
+    vy: (Math.random()-0.5)*0.15,
+    hueOffset: Math.random()*60
+  });
+}
+
+// utility linear interpolation for smooth parallax
+let t = 0;
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  // subtle gradient overlay for depth
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0, 'rgba(3,6,12,0.0)');
+  g.addColorStop(1, 'rgba(2,4,8,0.6)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,W,H);
+
+  // draw orbs (large diffuse lights)
+  orbs.forEach(o=>{
+    o.x += o.vx; o.y += o.vy;
+    if(o.x < -o.r) o.x = W+o.r;
+    if(o.x > W+o.r) o.x = -o.r;
+    if(o.y < -o.r) o.y = H+o.r;
+    if(o.y > H+o.r) o.y = -o.r;
+
+    const grd = ctx.createRadialGradient(o.x,o.y,o.r*0.05,o.x,o.y,o.r);
+    const hue = 190 + (o.hueOffset%80);
+    grd.addColorStop(0, `rgba(${Math.floor(0+o.hueOffset)},220,255,0.12)`);
+    grd.addColorStop(0.3, `rgba(0,200,255,0.06)`);
+    grd.addColorStop(1, 'rgba(3,6,12,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2); ctx.fill();
+  });
+
+  // draw connections between nodes
+  for(let i=0;i<nodes.length;i++){
+    const a = nodes[i];
+    // move node
+    a.x += a.vx + Math.sin(t*0.0008 + i)*0.08;
+    a.y += a.vy + Math.cos(t*0.0007 + i)*0.08;
+    if(a.x < 0) a.x = W;
+    if(a.x > W) a.x = 0;
+    if(a.y < 0) a.y = H;
+    if(a.y > H) a.y = 0;
+
+    // draw node dot
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0,212,255,0.8)';
+    ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+    ctx.fill();
+
+    // connect to nearby nodes
+    for(let j=i+1;j<nodes.length;j++){
+      const b = nodes[j];
+      const dx = a.x - b.x; const dy = a.y - b.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < Math.max(100, Math.min(150, W/8))){
+        ctx.beginPath();
+        const alpha = 0.55 * (1 - dist / (Math.max(100, Math.min(150, W/8))));
+        // gradient line color from cyan -> purple slightly by position
+        const grad = ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+        grad.addColorStop(0, `rgba(0,212,255,${alpha*0.8})`);
+        grad.addColorStop(1, `rgba(201,82,255,${alpha*0.5})`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 0.6;
+        ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+  }
+
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// handle resize
+window.addEventListener('resize', ()=>{
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
+});
+
+// subtle slow pan to create parallax depth when mouse moves
+let mx=0,my=0;
+document.addEventListener('mousemove', e=>{
+  mx = (e.clientX - W/2) * 0.0008;
+  my = (e.clientY - H/2) * 0.0008;
+  // apply small offsets to orbs
+  orbs.forEach((o,i)=>{
+    o.x += mx * (i%3+1);
+    o.y += my * (i%3+1);
+  });
+});
+
+/* ===================== Helpful notes for image placeholders =====================
+Where to put pictures:
+ - Header profile: images/profile.jpg
+ - About image: images/about-1.jpg
+ - Project images: images/smoghawk-1.jpg, images/smoghawk-1-thumb.jpg, etc.
+   (Thumbs displayed in grid; "data-src" points to full-size image for lightbox.)
+ - Achievements image: images/achievements.jpg
+ - Contact banner: images/contact-banner.jpg
+Copy / replace the placeholder filenames with your own images inside the 'images/' folder.
+========================================================================== */
+</script>
 </body>
+</html>
